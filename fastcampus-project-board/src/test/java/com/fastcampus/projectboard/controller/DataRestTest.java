@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Disabled("Spring Data REST 통합테스트는 불필요하므로 제외시킴")
 @DisplayName("Data REST - API 테스트")
 @Transactional
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc //WebMvcTest가 아닌 @SpringBootTest에서도 Mock 테스트를 가능하게 해주는 역할
 @SpringBootTest
 public class DataRestTest {
     private final MockMvc mvc;
