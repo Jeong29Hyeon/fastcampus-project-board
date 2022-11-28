@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>게시판 페이지</title>
 </head>
 
-<body> <!--앞에 header는 templates기준에서 위치 :: 뒤에 header는 element이름, id, class검색 등 가능 -->
-    <header th:replace="header :: header"></header>
+<body>
+    <header id="header"></header>
 
     <main>
         <form>
@@ -68,7 +68,7 @@
         </nav>
     </main>
 
-    <footer th:replace="footer :: footer"></footer>
+    <footer id="footer"></footer>
 
 </body>
 </html>
