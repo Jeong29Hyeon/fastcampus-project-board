@@ -3,6 +3,7 @@ package com.fastcampus.projectboard.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.catalina.User;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -14,10 +15,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes ={
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -35,7 +37,9 @@ public class Article extends AuditingFields{
 
     @Setter private String hashtag; //해시태그
 
-    @OrderBy("id")
+    @Setter @ManyToOne(optional = false) private UserAccount userAccount;
+
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     @ToString.Exclude
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
@@ -44,13 +48,14 @@ public class Article extends AuditingFields{
     protected Article() {
     }
 
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
-    public static Article of(String title, String content, String hashtag) {
-       return new Article(title,content,hashtag);
+    public static Article of(UserAccount userAccount,String title, String content, String hashtag) {
+       return new Article(userAccount,title,content,hashtag);
     }
 
     @Override
