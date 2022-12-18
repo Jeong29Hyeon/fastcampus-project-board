@@ -4,7 +4,6 @@ import com.fastcampus.projectboard.domain.Article;
 import com.fastcampus.projectboard.domain.UserAccount;
 import com.fastcampus.projectboard.domain.type.SearchType;
 import com.fastcampus.projectboard.dto.ArticleDto;
-import com.fastcampus.projectboard.dto.ArticleUpdateDto;
 import com.fastcampus.projectboard.dto.ArticleWithCommentsDto;
 import com.fastcampus.projectboard.dto.UserAccountDto;
 import com.fastcampus.projectboard.repository.ArticleRepository;
@@ -59,7 +58,7 @@ class ArticleServiceTest {
         SearchType searchType = SearchType.TITLE;
         String searchKeyword = "title";
         Pageable pageable = Pageable.ofSize(20);
-        given(articleRepository.findByTitle(searchKeyword, pageable)).willReturn(Page.empty());
+        given(articleRepository.findByTitleContaining(searchKeyword, pageable)).willReturn(Page.empty());
         //When
         Page<ArticleDto> articles = sut.searchArticles(searchType, searchKeyword, pageable);
 
@@ -67,7 +66,7 @@ class ArticleServiceTest {
         //Then
         assertThat(articles)
                 .isEmpty();
-        then(articleRepository).should().findByTitle(searchKeyword, pageable);
+        then(articleRepository).should().findByTitleContaining(searchKeyword, pageable);
     }
 
     @DisplayName("게시글을 조회하면, 게시글을 반환한다.")
@@ -111,11 +110,11 @@ class ArticleServiceTest {
     @Test
     void givenArticleInfo_whenSavingArticle_thenSavesArticle() {
         //Given
-        ArticleDto articleDto = createArticleDto();
+        ArticleDto dto = createArticleDto();
         given(articleRepository.save(any(Article.class))).willReturn(createArticle());
 
         //When
-        sut.saveArticle(articleDto);
+        sut.saveArticle(dto);
 
         //Then
         then(articleRepository).should().save(any(Article.class));
@@ -161,7 +160,7 @@ class ArticleServiceTest {
         willDoNothing().given(articleRepository).deleteById(articleId);
 
         //When
-        sut.deleteArticle(1L);
+        sut.deleteArticle(articleId);
 
         //Then
         then(articleRepository).should().deleteById(articleId);
