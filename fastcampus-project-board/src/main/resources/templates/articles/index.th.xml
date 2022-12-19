@@ -26,8 +26,6 @@
         </attr>
     </attr>
 
-<<<<<<< Updated upstream
-=======
     <attr sel="tbody" th:remove="all-but-first">
         <attr sel="tr[0]" th:each="article : ${articles}">
             <attr sel="td.title/a" th:text="${article.title}" th:href="@{'/articles/' + ${article.id}}"/>
@@ -57,5 +55,4 @@
               th:class="'page-link' + (${articles.number} >= ${articles.totalPages - 1} ? ' disabled' : '')"
         />
     </attr>
->>>>>>> Stashed changes
 </thlogic>
